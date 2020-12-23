@@ -31,6 +31,8 @@ function Get-RUMRdpPath {
                 Write-Error "Cannot find FreeRdp on the system, please make sure it's installed." -ErrorAction Stop
                 return
             }
+
+            $RdpFilePath
         }
         Default {
             Write-Error "Could not identify operating system, aborting." -ErrorAction Stop
