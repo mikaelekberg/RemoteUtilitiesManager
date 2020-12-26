@@ -2,7 +2,13 @@ function New-RUMProfile {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true)]
-        [String]$ProfileName
+        [String]$ProfileName,
+
+        [Parameter(Mandatory=$false)]
+        [String]$DefaultProtocol = "RDP",
+
+        [Parameter(Mandatory=$false)]
+        [String]$DefaultRdpKeyboardLayout = "United States - English"
     )
     $RUMProfilePath = Get-RUMPath
 
@@ -12,7 +18,8 @@ function New-RUMProfile {
 
         $Globals = @{
             Name = "RUM"
-            DefaultProtocol = "RDP"
+            DefaultProtocol = $DefaultProtocol
+            DefaultRdpKeyboardLayout = $DefaultRdpKeyboardLayout
         }
 
         $Profiles = @{
