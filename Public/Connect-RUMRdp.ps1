@@ -4,7 +4,7 @@ function Connect-RUMRdp {
         [Parameter(Mandatory=$true)]
         [String]$ComputerName,
         
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory=$true)]
         [System.Management.Automation.PSCredential]$Credential,
 
         [Parameter(Mandatory=$false)]
