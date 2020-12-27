@@ -16,7 +16,7 @@ function Connect-RUMRdp {
 
     $RdpFilePath = Get-RumRdpPath
 
-    $ArgumentList = "/v:$ComputerName /cert-ignore /size:1920x1027"
+    $ArgumentList = "/v:$ComputerName /cert-ignore /size:1920x1027 /log-level:WARN"
 
     if ($PSBoundParameters.ContainsKey("Credential")) {
         $ArgumentList = "$ArgumentList /u:{0} /p:{1}" -f $Credential.UserName, $Credential.GetNetworkCredential().Password
