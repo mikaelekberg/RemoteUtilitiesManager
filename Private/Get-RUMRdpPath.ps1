@@ -1,17 +1,17 @@
 function Get-RUMRdpPath {
-    $RUMProfilePath = Get-RUMPath -FolderPath
+    $RUMFolderPath = Get-RUMPath -FolderPath
 
-    if(-not (Test-Path -Path $RUMProfilePath)) {
-        Write-Error "A Remote Utilities Manager profile does not exist. Create the profile with New-RUMProfile first." -ErrorAction Stop
+    if(-not (Test-Path -Path $RUMFolderPath)) {
+        Write-Error "A Remote Utilities Manager profile does not exist. Create a database with New-RUMDatabase first." -ErrorAction Stop
         return
     }
 
     switch ($true) {
         $IsWindows {
-            $RdpFilePath = Join-Path -Path $RUMProfilePath -ChildPath "bin\wfreerdp.exe"
+            $RdpFilePath = Join-Path -Path $RUMFolderPath -ChildPath "bin\wfreerdp.exe"
 
             if(-not (Test-Path -Path $RdpFilePath)) {
-                Write-Error "Cannot find FreeRdp in path $RdpFilePath." -ErrorAction Stop
+                Write-Error "Cannot find FreeRdp in path $RdpFilePath. Can be downloaded from https://ci.freerdp.com/job/freerdp-nightly-windows/" -ErrorAction Stop
                 return
             }
         

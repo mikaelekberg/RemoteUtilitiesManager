@@ -5,10 +5,11 @@ function Connect-RUMSsh {
         [String]$ComputerName,
         
         [Parameter(Mandatory=$false)]
-        [String]$UserName
+        [String]$UserName,
+
+        [Parameter(Mandatory=$false)]
+        [String]$Port = 22
     )
-    
-    $Port = 22
 
     if (Test-Connection -TargetName $ComputerName -TCPPort $Port -Quiet -ErrorAction SilentlyContinue) {
         ssh $UserName@$ComputerName

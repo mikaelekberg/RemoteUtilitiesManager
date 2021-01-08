@@ -4,7 +4,7 @@ function Connect-RUMConnection {
         [ArgumentCompleter( {
             param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
     
-            Get-RUMProfile | Sort-Object -Property Name | Where-Object { $_.Name -like "$wordToComplete*" } | Foreach-Object { 
+            Get-RUMDatabase | Sort-Object -Property Name | Where-Object { $_.Name -like "$wordToComplete*" } | Foreach-Object { 
                 $Name = $_.Name
                 $Pattern = "^[a-zA-Z0-9]+$"
                 if ($Name -notmatch $Pattern) { $Name = "'$Name'" }
@@ -12,17 +12,17 @@ function Connect-RUMConnection {
             }
         })]
         [Parameter(Mandatory=$true, Position=0)]
-        [string]$ProfileName,
+        [string]$DatabaseName,
         
         [ArgumentCompleter( {
             param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
 
-            if ($fakeBoundParameters.ContainsKey('ProfileName'))
+            if ($fakeBoundParameters.ContainsKey('DatabaseName'))
             {
-                $ProfileName = $fakeBoundParameters['ProfileName']
+                $DatabaseName = $fakeBoundParameters['DatabaseName']
             }
     
-            Get-RUMProfile -ProfileName $ProfileName | Select-Object -ExpandProperty Connections | Sort-Object -Property DisplayName | Where-Object { $_.DisplayName -like "$wordToComplete*" } | Foreach-Object { 
+            Get-RUMDatabase -DatabaseName $DatabaseName | Select-Object -ExpandProperty Connections | Sort-Object -Property DisplayName | Where-Object { $_.DisplayName -like "$wordToComplete*" } | Foreach-Object { 
                 $Name = $_.DisplayName
                 $Pattern = "^[a-zA-Z0-9]+$"
                 if ($Name -notmatch $Pattern) { $Name = "'$Name'" }
@@ -39,79 +39,84 @@ function Connect-RUMConnection {
     )
 
     begin {
-        
+        $RUMFolderPath = Get-RUMPath -FolderPath
     }
 
     process {
-        $RUMProfilePath = Get-RUMPath
+        $Database = Get-RUMDatabase -DatabaseName $DatabaseName
 
-        $Settings = Get-Content $RUMProfilePath -Raw | ConvertFrom-Json -AsHashtable
+        if ($Database) {
+            $DatabaseFilePath = Join-Path -Path $RUMFolderPath -ChildPath $($Database.FileName)
+            Write-Verbose "$DatabaseFilePath"
 
-        if(-not (Get-RUMProfile -ProfileName $ProfileName)){
-            Write-Error "A Remote Utilities Manager profile with the name [$ProfileName] does not exist. Create the profile with New-RUMProfile first." -ErrorAction Stop
-            return
-        }
+            $Connection = Get-RUMConnection -DatabaseName $DatabaseName -DisplayName $DisplayName
 
-        if(($Settings.Profiles | Where-Object {$_.Name -eq $ProfileName}).Connections.DisplayName -notcontains $DisplayName) {
-            Write-Error "A Remote Utilities Manager connection with the display name [$DisplayName] does not exist in the profile [$ProfileName]" -ErrorAction Stop
-            return
-        }
-
-        $Connection = $Settings.Profiles | Where-Object {$_.Name -eq $ProfileName} | ForEach-Object {$_.Connections | Where-Object {$_.DisplayName -eq $DisplayName}}
-
-        if($PSBoundParameters.ContainsKey("Protocol")) {
-            $ConnectionProtocol = $Protocol
-        }
-        else {
-            $ConnectionProtocol = $Connection.Protocol
-        }
-
-        switch ($ConnectionProtocol) {
-            RDP {
-                $ConnectionParams = @{
-                    ComputerName = $Connection.ComputerName
-                    KeyboardLayout = $Settings.Globals.DefaultRdpKeyboardLayout
-                }
+            if ($Connection) {
+                $Settings = Get-RUMSetting
                 
-                if ($Connection.CredentialName) {
-                    $Credential = Get-Secret -Name $Connection.CredentialName
-
-                    if ($null -ne $Credential) {
-                        $ConnectionParams += @{
-                            Credential = $Credential
-                        }
-                    } 
-                }
-                
-                Connect-RUMRdp @ConnectionParams
-            }
-            SSH {
-                $ConnectionParams = @{
-                    ComputerName = $Connection.ComputerName
-                }
-                
-                if ($Connection.CredentialName) {
-                    $UserName = (Get-Secret -Name $Connection.CredentialName).UserName
-
-                    if ($null -ne $UserName) {
-                        $ConnectionParams += @{
-                            UserName = $UserName
-                        }
-                    } 
+                if($PSBoundParameters.ContainsKey("Protocol")) {
+                    $ConnectionProtocol = $Protocol
                 }
                 else {
-                    $UserName = Read-Host "Please enter SSH username for $($Connection.DisplayName)"
-
-                    if ($null -ne $UserName) {
-                        $ConnectionParams += @{
-                            UserName = $UserName
-                        }
-                    }
+                    $ConnectionProtocol = $Connection.Protocol
                 }
-
-                Connect-RUMSsh @ConnectionParams
+        
+                switch ($ConnectionProtocol) {
+                    RDP {
+                        $ConnectionParams = @{
+                            ComputerName = $Connection.ComputerName
+                            KeyboardLayout = $Settings.DefaultRdpKeyboardLayout
+                        }
+                        
+                        if ($Connection.CredentialName) {
+                            $Credential = Get-Secret -Name $Connection.CredentialName
+        
+                            if ($null -ne $Credential) {
+                                $ConnectionParams += @{
+                                    Credential = $Credential
+                                }
+                            } 
+                        }
+                        
+                        Connect-RUMRdp @ConnectionParams
+                    }
+                    SSH {
+                        $ConnectionParams = @{
+                            ComputerName = $Connection.ComputerName
+                        }
+                        
+                        if ($Connection.CredentialName) {
+                            $UserName = (Get-Secret -Name $Connection.CredentialName).UserName
+        
+                            if ($null -ne $UserName) {
+                                $ConnectionParams += @{
+                                    UserName = $UserName
+                                }
+                            } 
+                        }
+                        else {
+                            $UserName = Read-Host "Please enter SSH username for $($Connection.DisplayName)"
+        
+                            if ($null -ne $UserName) {
+                                $ConnectionParams += @{
+                                    UserName = $UserName
+                                }
+                            }
+                        }
+        
+                        Connect-RUMSsh @ConnectionParams
+                    }
+                    Default {}
+                }
             }
-            Default {}
+            else {
+                Write-Error "A Remote Utilities Manager connection with the display name [$DisplayName] does not exist in the profile [$DatabaseName]" -ErrorAction Stop
+                return
+            }
+        }
+        else {
+            Write-Error "A database with the name [$DatabaseName] does not exist." -ErrorAction Stop
+            return
         }
     }
 }

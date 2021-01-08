@@ -15,3 +15,12 @@ class RUMProfile {
 
     RUMProfile(){}
 }
+
+class RUMDatabase {
+    [string]$Name
+    [string]$Guid
+    [string]$FileName
+    [RUMConnection[]]$Connections
+
+    RUMDatabase(){}
+}

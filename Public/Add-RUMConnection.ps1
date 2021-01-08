@@ -4,7 +4,7 @@ function Add-RUMConnection {
         [ArgumentCompleter( {
             param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
 
-            Get-RUMProfile | Sort-Object -Property Name | Where-Object { $_.Name -like "$wordToComplete*" } | Foreach-Object { 
+            Get-RUMDatabase | Sort-Object -Property Name | Where-Object { $_.Name -like "$wordToComplete*" } | Foreach-Object { 
                 $Name = $_.Name
                 $Pattern = "^[a-zA-Z0-9]+$"
                 if ($Name -notmatch $Pattern) { $Name = "'$Name'" }
@@ -12,7 +12,7 @@ function Add-RUMConnection {
             }
         })]
         [Parameter(Mandatory = $true, Position = 0)]
-        [string]$ProfileName,
+        [string]$DatabaseName,
     
         [Parameter(Mandatory=$true, Position=1)]
         [String]$DisplayName,
@@ -39,64 +39,66 @@ function Add-RUMConnection {
     )
     
     begin {
-        $RUMProfilePath = Get-RUMPath
+        $RUMFolderPath = Get-RUMPath -FolderPath
     }
 
     process {
-        if(-not (Test-Path -Path $RUMProfilePath)) {
-            Write-Error "A Remote Utilities Manager profile does not exist. Create the profile with New-RUMProfile first." -ErrorAction Stop
-            return
-        }
+        $Database = Get-RUMDatabase -DatabaseName $DatabaseName
+        
+        if ($Database) {
+            $DatabaseFilePath = Join-Path -Path $RUMFolderPath -ChildPath $($Database.FileName)
+            Write-Verbose "$DatabaseFilePath"
 
-        $Settings = Get-Content $RUMProfilePath -Raw | ConvertFrom-Json -AsHashtable
+            $DatabaseSettings = Get-Content $DatabaseFilePath -Raw | ConvertFrom-Json -AsHashtable
+            $Settings = Get-RUMSetting
 
-        if(-not (Get-RUMProfile -ProfileName $ProfileName)){
-            Write-Error "A Remote Utilities Manager profile with the name [$ProfileName] does not exist. Create the profile with New-RUMProfile first." -ErrorAction Stop
-            return
-        }
+            if($DatabaseSettings.Connections | Where-Object {$_.DisplayName -eq $DisplayName}) {
+                Write-Error "A Remote Utilities Manager connection with the display name [$DisplayName] already exists in database [$DatabaseName]" -ErrorAction Stop
+                return
+            }    
 
-        if(($Settings.Profiles | Where-Object {$_.Name -eq $ProfileName}).Connections.DisplayName -contains $DisplayName) {
-            Write-Error "A Remote Utilities Manager connection with the display name [$DisplayName] already exists in profile [$ProfileName]" -ErrorAction Stop
-            return
-        }
+            if($PSBoundParameters.ContainsKey("Protocol")) {
+                $ConnectionProtocol = $Protocol
+            }
+            else {
+                $ConnectionProtocol = $Settings.DefaultProtocol
+            }
+    
+            if($PSBoundParameters.ContainsKey("ComputerName")) {
+                $ConnectionComputerName = $ComputerName
+            }
+            else {
+                $ConnectionComputerName = $DisplayName
+            }
+    
+            if($PSBoundParameters.ContainsKey("CredentialName")) {
+                $ConnectionCredentialName = $CredentialName
+            }
+            else {
+                $ConnectionCredentialName = ""
+            }
+    
+            $Guid = (New-Guid).Guid
+    
+            $Connection = [PSCustomObject]@{
+                DisplayName = $DisplayName
+                ComputerName = $ConnectionComputerName
+                CredentialName = $ConnectionCredentialName
+                Protocol = $ConnectionProtocol
+                Guid = $Guid
+            }
 
-        if($PSBoundParameters.ContainsKey("Protocol")) {
-            $ConnectionProtocol = $Protocol
+            $Array = @()
+            $Array += ($DatabaseSettings).Connections
+            $Array += $Connection
+
+            ($DatabaseSettings).Connections = $Array
+
+            ConvertTo-Json $DatabaseSettings -Depth 10 | Set-Content -Path $DatabaseFilePath
         }
         else {
-            $ConnectionProtocol = $Settings.Globals.DefaultProtocol
+            Write-Error "A database with the name [$DatabaseName] does not exist." -ErrorAction Stop
+            return
         }
-
-        if($PSBoundParameters.ContainsKey("ComputerName")) {
-            $ConnectionComputerName = $ComputerName
-        }
-        else {
-            $ConnectionComputerName = $DisplayName
-        }
-
-        if($PSBoundParameters.ContainsKey("CredentialName")) {
-            $ConnectionCredentialName = $CredentialName
-        }
-        else {
-            $ConnectionCredentialName = ""
-        }
-
-        $Guid = (New-Guid).Guid
-
-        $Connection = [PSCustomObject]@{
-            DisplayName = $DisplayName
-            ComputerName = $ConnectionComputerName
-            CredentialName = $ConnectionCredentialName
-            Protocol = $ConnectionProtocol
-            Guid = $Guid
-        }
-
-        $Array = @()
-        $Array += ($Settings.Profiles | Where-Object {$_.Name -eq $ProfileName}).Connections
-        $Array += $Connection
-
-        ($Settings.Profiles | Where-Object {$_.Name -eq $ProfileName}).Connections = $Array
-
-        ConvertTo-Json $Settings -Depth 10 | Set-Content -Path $RUMProfilePath
     }
 }

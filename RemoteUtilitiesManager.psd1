@@ -12,7 +12,7 @@
 RootModule = 'RemoteUtilitiesManager.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0'
+ModuleVersion = '0.2'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -33,7 +33,7 @@ Copyright = '(c) Mikael Ekberg. All Rights Reserved'
 Description = 'PowerShell module to manage and connect to remote systems'
 
 # Minimum version of the PowerShell engine required by this module
-# PowerShellVersion = ''
+PowerShellVersion = '7.0'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
@@ -80,7 +80,13 @@ FunctionsToExport = @(
     'Set-RUMProfile',
     'Connect-RUMConnection',
     'Connect-RUMRdp',
-    'Connect-RUMSsh'
+    'Connect-RUMSsh',
+    'New-RUMDatabase',
+    'Get-RUMDatabase',
+    'Set-RUMDatabase',
+    'Remove-RUMDatabase',
+    'New-RUMSetting',
+    'Get-RUMSetting'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -110,10 +116,10 @@ PrivateData = @{
         Tags = 'RDP', 'SSH'
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/MikaelEkberg/RemoteUtilitiesManager/blob/main/LICENSE'
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/MikaelEkberg/RemoteUtilitiesManager'
 
         # A URL to an icon representing this module.
         # IconUri = ''
