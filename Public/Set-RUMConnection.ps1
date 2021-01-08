@@ -92,7 +92,7 @@ function Set-RUMConnection {
                 ConvertTo-Json $DatabaseSettings -Depth 10 | Set-Content -Path $DatabaseFilePath
             }
             else {
-                Write-Error "A Remote Utilities Manager connection with the display name [$DisplayName] does not exist in the profile [$DatabaseName]" -ErrorAction Stop
+                Write-Error "A Remote Utilities Manager connection with the display name [$DisplayName] does not exist in the database [$DatabaseName]" -ErrorAction Stop
                 return
             }
         }

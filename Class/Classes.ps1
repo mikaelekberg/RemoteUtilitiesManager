@@ -8,14 +8,6 @@ class RUMConnection {
     RUMConnection(){}
 }
 
-class RUMProfile {
-    [string]$Name
-    [string]$Guid
-    [RUMConnection[]]$Connections
-
-    RUMProfile(){}
-}
-
 class RUMDatabase {
     [string]$Name
     [string]$Guid
