@@ -3,10 +3,21 @@ function New-RUMSetting {
     param(
         [Parameter(Mandatory=$false, Position=0)]
         [ValidateSet("RDP","SSH")]
-        [String]$DefaultProtocol = "RDP",
+        [string]$DefaultProtocol = "RDP",
 
         [Parameter(Mandatory=$false, Position=1)]
-        [String]$DefaultRdpKeyboardLayout = "United States - English"
+        [string]$DefaultRdpKeyboardLayout = "United States - English",
+
+        [Parameter(Mandatory=$false, Position=2)]
+        [ValidateRange(1,65535)]
+        [string]$DefaultRdpPort = "3389",
+
+        [Parameter(Mandatory=$false, Position=3)]
+        [ValidateRange(1,65535)]
+        [string]$DefaultSshPort = "22",
+
+        [Parameter(Mandatory=$false, Position=4)]
+        [string]$DefaultRdpFlags = "/cert-ignore /size:1920x1027 /log-level:WARN"
     )
     begin {
         $RUMFolderPath = Get-RUMPath -FolderPath
@@ -23,6 +34,9 @@ function New-RUMSetting {
             $Settings = @{
                 DefaultProtocol = $DefaultProtocol
                 DefaultRdpKeyboardLayout = $DefaultRdpKeyboardLayout
+                DefaultRdpPort = $DefaultRdpPort
+                DefaultSshPort = $DefaultSshPort
+                DefaultRdpFlags = $DefaultRdpFlags
             }
     
             ConvertTo-Json $Settings -Depth 10 | Set-Content -Path $RUMSettingsPath

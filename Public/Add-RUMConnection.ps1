@@ -15,10 +15,10 @@ function Add-RUMConnection {
         [string]$DatabaseName,
     
         [Parameter(Mandatory=$true, Position=1)]
-        [String]$DisplayName,
+        [string]$DisplayName,
 
         [Parameter(Mandatory=$false, Position=2)]
-        [String]$ComputerName,
+        [string]$ComputerName,
 
         [ArgumentCompleter( {
             param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
@@ -35,7 +35,11 @@ function Add-RUMConnection {
 
         [Parameter(Mandatory=$false, Position=4)]
         [ValidateSet("RDP","SSH")]
-        [String]$Protocol
+        [string]$Protocol,
+
+        [Parameter(Mandatory=$false, Position=5)]
+        [ValidateRange(1,65535)]
+        [string]$Port
     )
     
     begin {
@@ -63,6 +67,23 @@ function Add-RUMConnection {
             else {
                 $ConnectionProtocol = $Settings.DefaultProtocol
             }
+
+            if($PSBoundParameters.ContainsKey("Port")) {
+                $ConnectionPort = $Port
+            }
+            else {
+                switch ($ConnectionProtocol) {
+                    RDP {
+                        $ConnectionPort = $Settings.DefaultRdpPort
+                    }
+                    SSH {
+                        $ConnectionPort = $Settings.DefaultSshPort
+                    }
+                    Default {
+                        $ConnectionPort = 69
+                    }
+                }
+            }
     
             if($PSBoundParameters.ContainsKey("ComputerName")) {
                 $ConnectionComputerName = $ComputerName
@@ -85,6 +106,7 @@ function Add-RUMConnection {
                 ComputerName = $ConnectionComputerName
                 CredentialName = $ConnectionCredentialName
                 Protocol = $ConnectionProtocol
+                Port = $ConnectionPort
                 Guid = $Guid
             }
 

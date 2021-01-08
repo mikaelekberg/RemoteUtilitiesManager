@@ -1,9 +1,10 @@
 class RUMConnection {
-    [String]$DisplayName
-    [String]$ComputerName
-    [String]$CredentialName
-    [String]$Protocol
-    [String]$Guid
+    [string]$DisplayName
+    [string]$ComputerName
+    [string]$CredentialName
+    [string]$Protocol
+    [string]$Port
+    [string]$Guid
 
     RUMConnection(){}
 }

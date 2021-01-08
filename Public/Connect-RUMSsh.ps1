@@ -8,7 +8,7 @@ function Connect-RUMSsh {
         [String]$UserName,
 
         [Parameter(Mandatory=$false, Position=2)]
-        [String]$Port = 22
+        [String]$Port = "22"
     )
 
     if (Test-Connection -TargetName $ComputerName -TCPPort $Port -Quiet -ErrorAction SilentlyContinue) {

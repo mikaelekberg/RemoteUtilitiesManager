@@ -31,11 +31,15 @@ function Connect-RUMConnection {
             }
         })]
         [Parameter(Mandatory=$true, Position=1)]
-        [String]$DisplayName,
+        [string]$DisplayName,
 
         [Parameter(Mandatory=$false, Position=2)]
         [ValidateSet("RDP","SSH")]
-        [String]$Protocol
+        [string]$Protocol,
+
+        [Parameter(Mandatory=$false, Position=3)]
+        [ValidateRange(1,65535)]
+        [string]$Port
     )
 
     begin {
@@ -60,11 +64,19 @@ function Connect-RUMConnection {
                 else {
                     $ConnectionProtocol = $Connection.Protocol
                 }
+
+                if($PSBoundParameters.ContainsKey("Port")) {
+                    $ConnectionPort = $Port
+                }
+                else {
+                    $ConnectionPort = $Connection.Port
+                }
         
                 switch ($ConnectionProtocol) {
                     RDP {
                         $ConnectionParams = @{
                             ComputerName = $Connection.ComputerName
+                            Port = $ConnectionPort
                             KeyboardLayout = $Settings.DefaultRdpKeyboardLayout
                         }
                         
@@ -110,7 +122,7 @@ function Connect-RUMConnection {
                 }
             }
             else {
-                Write-Error "A Remote Utilities Manager connection with the display name [$DisplayName] does not exist in the profile [$DatabaseName]" -ErrorAction Stop
+                Write-Error "A Remote Utilities Manager connection with the display name [$DisplayName] does not exist in the database [$DatabaseName]" -ErrorAction Stop
                 return
             }
         }

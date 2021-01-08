@@ -2,21 +2,26 @@ function Connect-RUMRdp {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true, Position=0)]
-        [String]$ComputerName,
+        [string]$ComputerName,
         
         [Parameter(Mandatory=$true, Position=1)]
         [System.Management.Automation.PSCredential]$Credential,
 
         [Parameter(Mandatory=$false, Position=2)]
-        [String]$KeyboardLayout,
+        [string]$KeyboardLayout,
 
         [Parameter(Mandatory=$false, Position=3)]
-        [String]$Port = 3389
+        [string]$Port = "3389"
     )
 
     $RdpFilePath = Get-RumRdpPath
+    $Settings = Get-RUMSetting
 
-    $ArgumentList = "/v:$ComputerName /cert-ignore /size:1920x1027 /log-level:WARN"
+    $ArgumentList = "/v:$ComputerName"
+
+    if (-not ($null -eq $Settings.DefaultRdpFlags)) {
+        $ArgumentList = "$ArgumentList $($Settings.DefaultRdpFlags)"
+    } 
 
     if ($PSBoundParameters.ContainsKey("Credential")) {
         $ArgumentList = "$ArgumentList /u:{0} /p:{1}" -f $Credential.UserName, $Credential.GetNetworkCredential().Password

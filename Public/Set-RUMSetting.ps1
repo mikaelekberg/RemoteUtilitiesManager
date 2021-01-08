@@ -3,10 +3,21 @@ function Set-RUMSetting {
     param(
         [Parameter(Mandatory=$false, Position=0)]
         [ValidateSet("RDP","SSH")]
-        [String]$DefaultProtocol,
+        [string]$DefaultProtocol,
 
         [Parameter(Mandatory=$false, Position=1)]
-        [String]$DefaultRdpKeyboardLayout
+        [string]$DefaultRdpKeyboardLayout,
+
+        [Parameter(Mandatory=$false, Position=2)]
+        [ValidateRange(1,65535)]
+        [string]$DefaultRdpPort,
+
+        [Parameter(Mandatory=$false, Position=3)]
+        [ValidateRange(1,65535)]
+        [string]$DefaultSshPort,
+
+        [Parameter(Mandatory=$false, Position=4)]
+        [string]$DefaultRdpFlags
     )
     
     begin {
@@ -26,6 +37,18 @@ function Set-RUMSetting {
     
             if($PSBoundParameters.ContainsKey("DefaultRdpKeyboardLayout")) {
                 $Settings['DefaultRdpKeyboardLayout'] = $DefaultRdpKeyboardLayout
+            }
+
+            if($PSBoundParameters.ContainsKey("DefaultRdpPort")) {
+                $Settings['DefaultRdpPort'] = $DefaultRdpPort
+            }
+
+            if($PSBoundParameters.ContainsKey("DefaultSshPort")) {
+                $Settings['DefaultSshPort'] = $DefaultSshPort
+            }
+
+            if($PSBoundParameters.ContainsKey("DefaultRdpFlags")) {
+                $Settings['DefaultRdpFlags'] = $DefaultRdpFlags
             }
     
             ConvertTo-Json $Settings -Depth 10 | Set-Content -Path $RUMSettingsPath

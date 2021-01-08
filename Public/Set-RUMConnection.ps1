@@ -54,7 +54,11 @@ function Set-RUMConnection {
 
         [Parameter(Mandatory=$false, Position = 5)]
         [ValidateSet("RDP","SSH")]
-        [String]$Protocol
+        [String]$Protocol,
+
+        [Parameter(Mandatory=$false, Position=5)]
+        [ValidateRange(1,65535)]
+        [string]$Port
     )
     
     begin {
@@ -87,6 +91,10 @@ function Set-RUMConnection {
         
                 if($PSBoundParameters.ContainsKey("Protocol")) {
                     $Connection['Protocol'] = $Protocol
+                }
+
+                if($PSBoundParameters.ContainsKey("Port")) {
+                    $Connection['Port'] = $Port
                 }
         
                 ConvertTo-Json $DatabaseSettings -Depth 10 | Set-Content -Path $DatabaseFilePath
