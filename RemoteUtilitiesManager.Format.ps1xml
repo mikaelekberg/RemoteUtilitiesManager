@@ -4,35 +4,6 @@
         <View>
             <Name>Default</Name>
             <ViewSelectedBy>
-                <TypeName>RUMProfile</TypeName>
-            </ViewSelectedBy>
-            <TableControl>
-                <TableHeaders>
-                    <TableColumnHeader>
-                        <Width>20</Width>
-                    </TableColumnHeader>
-                    <TableColumnHeader>
-                        <Label>Connections</Label>
-                        <Width>70</Width>
-                    </TableColumnHeader>
-                </TableHeaders>
-                <TableRowEntries>
-                    <TableRowEntry>
-                        <TableColumnItems>
-                            <TableColumnItem>
-                                <PropertyName>Name</PropertyName>
-                            </TableColumnItem>
-                            <TableColumnItem>
-                                <ScriptBlock>$_.Connections.DisplayName</ScriptBlock>
-                            </TableColumnItem>
-                        </TableColumnItems>
-                    </TableRowEntry>
-                </TableRowEntries>
-            </TableControl>
-        </View>
-        <View>
-            <Name>Default</Name>
-            <ViewSelectedBy>
                 <TypeName>RUMDatabase</TypeName>
             </ViewSelectedBy>
             <TableControl>
