@@ -14,11 +14,11 @@ Credentials are managed through the [SecretManagement PowerShell Module](https:/
 
 ### External Programs
 
-***Remote Utilities Manager*** uses external programs to start connections to remote systems. FreeRDP is used for RDP connections and SSH client is used for SSH connections.
+**Remote Utilities Manager** uses external programs to start connections to remote systems. FreeRDP is used for RDP connections and SSH client is used for SSH connections.
 
 On Linux, install FreeRDP with your preferred package manager and then make sure FreeRDP is available on $PATH.
 
-On Windows, get FreeRDP from for example [ci.freerdp.com](https://ci.freerdp.com/job/freerdp-nightly-windows/) and then place the executable **wfreerdp.exe** in *~\\.remoteutilitiesmanager\bin* (the folder *.remoteutilitiesmanager* is created after you create your first database).
+On Windows, get FreeRDP from for example [ci.freerdp.com](https://ci.freerdp.com/job/freerdp-nightly-windows/) and then place the executable **wfreerdp.exe** in *~\\.remoteutilitiesmanager\bin* (the folder *.remoteutilitiesmanager* is created after you create your first RUM database).
 
 ## Remote Utilities Manager CmdLets
 
