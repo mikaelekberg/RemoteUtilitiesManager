@@ -14,7 +14,7 @@ function Set-RUMDatabase {
         [Parameter(Mandatory=$true, Position=0)]
         [string]$DatabaseName,
     
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$true, Position=1)]
         [String]$NewDatabaseName
     )
     

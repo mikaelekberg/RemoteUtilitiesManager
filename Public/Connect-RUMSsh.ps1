@@ -1,13 +1,13 @@
 function Connect-RUMSsh {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$true, Position=0)]
         [String]$ComputerName,
         
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory=$false, Position=1)]
         [String]$UserName,
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory=$false, Position=2)]
         [String]$Port = 22
     )
 

@@ -1,10 +1,11 @@
 function New-RUMSetting {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory=$false, Position=0)]
+        [ValidateSet("RDP","SSH")]
         [String]$DefaultProtocol = "RDP",
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory=$false, Position=1)]
         [String]$DefaultRdpKeyboardLayout = "United States - English"
     )
     begin {

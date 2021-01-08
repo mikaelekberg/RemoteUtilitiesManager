@@ -1,16 +1,16 @@
 function Connect-RUMRdp {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$true, Position=0)]
         [String]$ComputerName,
         
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$true, Position=1)]
         [System.Management.Automation.PSCredential]$Credential,
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory=$false, Position=2)]
         [String]$KeyboardLayout,
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory=$false, Position=3)]
         [String]$Port = 3389
     )
 

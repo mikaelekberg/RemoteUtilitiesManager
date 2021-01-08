@@ -1,7 +1,7 @@
 function New-RUMDatabase {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$true, Position=0)]
         [String]$DatabaseName
     )
 
