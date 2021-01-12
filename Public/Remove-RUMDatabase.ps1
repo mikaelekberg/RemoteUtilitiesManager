@@ -11,7 +11,8 @@ function Remove-RUMDatabase {
                 [System.Management.Automation.CompletionResult]::new($Name, $Name, "ParameterValue", $Name)
             }
         })]
-        [Parameter(Mandatory=$true, Position=0)]
+        [Parameter(Mandatory=$true, Position=0, ValueFromPipelineByPropertyName=$true)]
+        [Alias('Name')]
         [string] $DatabaseName
     )
     
