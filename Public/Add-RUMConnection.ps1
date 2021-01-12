@@ -11,13 +11,13 @@ function Add-RUMConnection {
                 [System.Management.Automation.CompletionResult]::new($Name, $Name, "ParameterValue", $Name)
             }
         })]
-        [Parameter(Mandatory = $true, Position = 0)]
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipelineByPropertyName=$true)]
         [string]$DatabaseName,
     
-        [Parameter(Mandatory=$true, Position=1)]
+        [Parameter(Mandatory=$true, Position=1, ValueFromPipelineByPropertyName=$true)]
         [string]$DisplayName,
 
-        [Parameter(Mandatory=$false, Position=2)]
+        [Parameter(Mandatory=$false, Position=2, ValueFromPipelineByPropertyName=$true)]
         [string]$ComputerName,
 
         [ArgumentCompleter( {
@@ -30,14 +30,14 @@ function Add-RUMConnection {
                 [System.Management.Automation.CompletionResult]::new($Name, $Name, "ParameterValue", $Name)
             }
         })]
-        [Parameter(Mandatory = $false, Position = 3)]
+        [Parameter(Mandatory = $false, Position = 3, ValueFromPipelineByPropertyName=$true)]
         [string]$CredentialName,
 
-        [Parameter(Mandatory=$false, Position=4)]
+        [Parameter(Mandatory=$false, Position=4, ValueFromPipelineByPropertyName=$true)]
         [ValidateSet("RDP","SSH")]
         [string]$Protocol,
 
-        [Parameter(Mandatory=$false, Position=5)]
+        [Parameter(Mandatory=$false, Position=5, ValueFromPipelineByPropertyName=$true)]
         [ValidateRange(1,65535)]
         [string]$Port
     )
