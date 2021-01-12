@@ -44,7 +44,11 @@ function Get-RUMConnection {
             }
         })]
         [Parameter(Mandatory = $false, Position = 2)]
-        [string]$CredentialName
+        [string]$CredentialName,
+
+        [Parameter(Mandatory=$false, Position=3)]
+        [ValidateSet("RDP","SSH")]
+        [string]$Protocol
     )
 
     begin {
@@ -73,6 +77,10 @@ function Get-RUMConnection {
 
         if ($CredentialName) {
             $Connections = $Connections | Where-Object {$_.CredentialName -eq $CredentialName}
+        }
+
+        if ($PSBoundParameters.ContainsKey("Protocol")) {
+            $Connections = $Connections | Where-Object {$_.Protocol -eq $Protocol}
         }
 
         $Connections
