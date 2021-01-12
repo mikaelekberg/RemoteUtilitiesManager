@@ -57,7 +57,7 @@ function Add-RUMConnection {
             $Settings = Get-RUMSetting
 
             if($DatabaseSettings.Connections | Where-Object {$_.DisplayName -eq $DisplayName}) {
-                Write-Error "A Remote Utilities Manager connection with the display name [$DisplayName] already exists in database [$DatabaseName]" -ErrorAction Stop
+                Write-Warning "A Remote Utilities Manager connection with the display name [$DisplayName] already exists in database [$DatabaseName]"
                 return
             }    
 
@@ -119,7 +119,7 @@ function Add-RUMConnection {
             ConvertTo-Json $DatabaseSettings -Depth 10 | Set-Content -Path $DatabaseFilePath
         }
         else {
-            Write-Error "A database with the name [$DatabaseName] does not exist." -ErrorAction Stop
+            Write-Error "A database with the name [$DatabaseName] does not exist."
             return
         }
     }
