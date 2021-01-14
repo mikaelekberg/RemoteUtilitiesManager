@@ -62,28 +62,45 @@ function Get-RUMConnection {
                 return
             }
         }
-        
-        $Connections = Get-RUMDatabase | Where-Object {
-            if($DatabaseName) {
-                $_.Name -like $DatabaseName
-            } else {
-                $true
+
+        $RUMDatabases = Get-ChildItem -Path $RUMFolderPath -Filter *.rumdb.json -ErrorAction SilentlyContinue
+
+        if ($RUMDatabases.Count -gt 0) {
+            $Databases = (Get-Content -Path $($RUMDatabases.FullName) -Raw | ConvertFrom-Json | ForEach-Object {
+                $_
+            } | Where-Object {
+                if($DatabaseName) {
+                    $_.Name -like $DatabaseName
+                } else {
+                    $true
+                }
+            })
+
+            [array]$ConnectionList = foreach ($Database in $Databases){
+                $DatabaseName = $Database.Name
+                $Connections = $Database.Connections
+                
+                if ($PSBoundParameters.ContainsKey("DisplayName")) {
+                    $Connections = $Connections | Where-Object {$_.DisplayName -eq $DisplayName}
+                }
+
+                if ($CredentialName) {
+                    $Connections = $Connections | Where-Object {$_.CredentialName -eq $CredentialName}
+                }
+
+                if ($PSBoundParameters.ContainsKey("Protocol")) {
+                    $Connections = $Connections | Where-Object {$_.Protocol -eq $Protocol}
+                }
+
+                $Connections | Add-Member -MemberType NoteProperty -Name DatabaseName -Value $DatabaseName
+
+                $Connections
             }
-        } | Select-Object -ExpandProperty Connections
 
-        if ($PSBoundParameters.ContainsKey("DisplayName")) {
-            $Connections = $Connections | Where-Object {$_.DisplayName -eq $DisplayName}
+            [RUMConnection[]]$ConnectionList
         }
-
-        if ($CredentialName) {
-            $Connections = $Connections | Where-Object {$_.CredentialName -eq $CredentialName}
+        else {
+            Write-Verbose "No Remote Utilities Manager databases exists. Create a database with New-RUMDatabase first."
         }
-
-        if ($PSBoundParameters.ContainsKey("Protocol")) {
-            $Connections = $Connections | Where-Object {$_.Protocol -eq $Protocol}
-        }
-
-        $Connections
     }
-
 }

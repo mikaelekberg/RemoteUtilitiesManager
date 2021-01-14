@@ -1,5 +1,6 @@
 class RUMConnection {
     [string]$DisplayName
+    [string]$DatabaseName
     [string]$ComputerName
     [string]$CredentialName
     [string]$Protocol

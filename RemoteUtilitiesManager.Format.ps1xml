@@ -57,7 +57,7 @@
                                 <PropertyName>DisplayName</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
-                                <PropertyName>ComputerName</PropertyName>
+                                <PropertyName>DatabaseName</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
                                 <PropertyName>Protocol</PropertyName>
