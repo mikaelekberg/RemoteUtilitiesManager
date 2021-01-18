@@ -94,6 +94,7 @@ function Connect-RUMConnection {
                     SSH {
                         $ConnectionParams = @{
                             ComputerName = $Connection.ComputerName
+                            Port = $ConnectionPort
                         }
                         
                         if ($Connection.CredentialName) {
