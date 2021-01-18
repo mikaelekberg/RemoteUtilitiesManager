@@ -6,17 +6,14 @@ function Set-RUMSetting {
         [string]$DefaultProtocol,
 
         [Parameter(Mandatory=$false, Position=1)]
-        [string]$DefaultRdpKeyboardLayout,
-
-        [Parameter(Mandatory=$false, Position=2)]
         [ValidateRange(1,65535)]
         [string]$DefaultRdpPort,
 
-        [Parameter(Mandatory=$false, Position=3)]
+        [Parameter(Mandatory=$false, Position=2)]
         [ValidateRange(1,65535)]
         [string]$DefaultSshPort,
 
-        [Parameter(Mandatory=$false, Position=4)]
+        [Parameter(Mandatory=$false, Position=3)]
         [string]$DefaultRdpFlags
     )
     
@@ -33,10 +30,6 @@ function Set-RUMSetting {
             
             if($PSBoundParameters.ContainsKey("DefaultProtocol")) {
                 $Settings['DefaultProtocol'] = $DefaultProtocol
-            }
-    
-            if($PSBoundParameters.ContainsKey("DefaultRdpKeyboardLayout")) {
-                $Settings['DefaultRdpKeyboardLayout'] = $DefaultRdpKeyboardLayout
             }
 
             if($PSBoundParameters.ContainsKey("DefaultRdpPort")) {

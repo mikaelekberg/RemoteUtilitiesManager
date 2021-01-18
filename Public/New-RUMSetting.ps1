@@ -6,17 +6,14 @@ function New-RUMSetting {
         [string]$DefaultProtocol = "RDP",
 
         [Parameter(Mandatory=$false, Position=1)]
-        [string]$DefaultRdpKeyboardLayout = "United States - English",
-
-        [Parameter(Mandatory=$false, Position=2)]
         [ValidateRange(1,65535)]
         [string]$DefaultRdpPort = "3389",
 
-        [Parameter(Mandatory=$false, Position=3)]
+        [Parameter(Mandatory=$false, Position=2)]
         [ValidateRange(1,65535)]
         [string]$DefaultSshPort = "22",
 
-        [Parameter(Mandatory=$false, Position=4)]
+        [Parameter(Mandatory=$false, Position=3)]
         [string]$DefaultRdpFlags = "/cert-ignore /size:1920x1027 /log-level:WARN"
     )
     begin {
@@ -33,7 +30,6 @@ function New-RUMSetting {
     
             $Settings = @{
                 DefaultProtocol = $DefaultProtocol
-                DefaultRdpKeyboardLayout = $DefaultRdpKeyboardLayout
                 DefaultRdpPort = $DefaultRdpPort
                 DefaultSshPort = $DefaultSshPort
                 DefaultRdpFlags = $DefaultRdpFlags

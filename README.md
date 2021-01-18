@@ -83,7 +83,7 @@ Used to update RUM settings.
 ### Example 1: Create a RUM settings file
 
 ```PowerShell
-New-RUMSetting -DefaultProtocol 'RDP' -DefaultRdpKeyboardLayout 'English'
+New-RUMSetting -DefaultProtocol 'RDP' -DefaultRdpPort 13389
 ```
 
 ### Example 2: Create a RUM database

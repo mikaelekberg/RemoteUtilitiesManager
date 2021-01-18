@@ -77,7 +77,6 @@ function Connect-RUMConnection {
                         $ConnectionParams = @{
                             ComputerName = $Connection.ComputerName
                             Port = $ConnectionPort
-                            KeyboardLayout = $Settings.DefaultRdpKeyboardLayout
                         }
                         
                         if ($Connection.CredentialName) {
