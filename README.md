@@ -56,7 +56,7 @@ Used to create a new RUM database.
 
 ### New-RUMSetting
 
-Used to create a RUM settings file. Includes some default settings, for example default protocol and keyboard layout. Default settings can be overridden when you add a connection or manually connects to a remote system.
+Used to create a RUM settings file. Includes some default settings, for example default protocol and ports. Default settings can be overridden when you add a connection or manually connects to a remote system.
 
 ### Remove-RUMConnection
 

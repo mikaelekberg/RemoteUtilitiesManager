@@ -8,9 +8,6 @@ function Connect-RUMRdp {
         [System.Management.Automation.PSCredential]$Credential,
 
         [Parameter(Mandatory=$false, Position=2)]
-        [string]$KeyboardLayout,
-
-        [Parameter(Mandatory=$false, Position=3)]
         [string]$Port = "3389"
     )
 
@@ -25,10 +22,6 @@ function Connect-RUMRdp {
 
     if ($PSBoundParameters.ContainsKey("Credential")) {
         $ArgumentList = "$ArgumentList /u:{0} /p:{1}" -f $Credential.UserName, $Credential.GetNetworkCredential().Password
-    }
-
-    if ($PSBoundParameters.ContainsKey("KeyboardLayout")) {
-        $ArgumentList = "$ArgumentList /kbd:$KeyboardLayout"
     }
 
     if (Test-Connection -TargetName $ComputerName -TCPPort $Port -Quiet -ErrorAction SilentlyContinue) {
