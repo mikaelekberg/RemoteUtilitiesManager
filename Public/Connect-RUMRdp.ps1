@@ -14,7 +14,7 @@ function Connect-RUMRdp {
     $RdpFilePath = Get-RumRdpPath
     $Settings = Get-RUMSetting
 
-    $ArgumentList = "/v:$ComputerName"
+    $ArgumentList = "/v:$($ComputerName):$($Port)"
 
     if (-not ($null -eq $Settings.DefaultRdpFlags)) {
         $ArgumentList = "$ArgumentList $($Settings.DefaultRdpFlags)"
