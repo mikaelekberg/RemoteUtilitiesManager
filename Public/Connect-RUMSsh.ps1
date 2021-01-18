@@ -12,7 +12,7 @@ function Connect-RUMSsh {
     )
 
     if (Test-Connection -TargetName $ComputerName -TCPPort $Port -Quiet -ErrorAction SilentlyContinue) {
-        ssh $UserName@$ComputerName
+        ssh $UserName@$ComputerName -p $Port
     }
     else {
         Write-Error "A connection with the server [$ComputerName] on port [$Port] could not be established." -ErrorAction Stop
