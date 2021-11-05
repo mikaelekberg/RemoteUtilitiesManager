@@ -58,7 +58,10 @@ function Set-RUMConnection {
 
         [Parameter(Mandatory=$false, Position=6, ValueFromPipelineByPropertyName=$true)]
         [ValidateRange(1,65535)]
-        [string]$Port
+        [string]$Port,
+
+        [Parameter(Mandatory=$false, Position=7, ValueFromPipelineByPropertyName=$true)]
+        [string[]]$Tag
     )
     
     begin {
@@ -95,6 +98,10 @@ function Set-RUMConnection {
 
                 if($PSBoundParameters.ContainsKey("Port")) {
                     $Connection['Port'] = $Port
+                }
+
+                if($PSBoundParameters.ContainsKey("Tag")) {
+                    $Connection['Tag'] = $Tag
                 }
         
                 ConvertTo-Json $DatabaseSettings -Depth 10 | Set-Content -Path $DatabaseFilePath

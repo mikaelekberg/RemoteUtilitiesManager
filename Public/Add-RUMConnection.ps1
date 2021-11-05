@@ -39,7 +39,10 @@ function Add-RUMConnection {
 
         [Parameter(Mandatory=$false, Position=5, ValueFromPipelineByPropertyName=$true)]
         [ValidateRange(1,65535)]
-        [string]$Port
+        [string]$Port,
+
+        [Parameter(Mandatory=$false, Position=6, ValueFromPipelineByPropertyName=$true)]
+        [string[]]$Tag
     )
     
     begin {
@@ -99,6 +102,13 @@ function Add-RUMConnection {
                 $ConnectionCredentialName = ""
             }
     
+            if($PSBoundParameters.ContainsKey("Tag")) {
+                $ConnectionTag = $Tag
+            }
+            else {
+                $ConnectionTag = ""
+            }
+    
             $Guid = (New-Guid).Guid
     
             $Connection = [PSCustomObject]@{
@@ -108,6 +118,7 @@ function Add-RUMConnection {
                 Protocol = $ConnectionProtocol
                 Port = $ConnectionPort
                 Guid = $Guid
+                Tag = $ConnectionTag
             }
 
             $Array = @()

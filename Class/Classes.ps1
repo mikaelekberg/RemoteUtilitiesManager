@@ -6,6 +6,7 @@ class RUMConnection {
     [string]$Protocol
     [string]$Port
     [string]$Guid
+    [string[]]$Tag
 
     RUMConnection(){}
 }

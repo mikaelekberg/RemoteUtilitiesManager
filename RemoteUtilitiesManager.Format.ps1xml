@@ -63,7 +63,7 @@
                                 <PropertyName>Protocol</PropertyName>
                             </TableColumnItem>
                             <TableColumnItem>
-                                <PropertyName>CredentialName</PropertyName>
+                                <PropertyName>Tag</PropertyName>
                             </TableColumnItem>
                         </TableColumnItems>
                     </TableRowEntry>

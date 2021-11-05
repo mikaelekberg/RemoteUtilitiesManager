@@ -48,7 +48,10 @@ function Get-RUMConnection {
 
         [Parameter(Mandatory=$false, Position=3)]
         [ValidateSet("RDP","SSH")]
-        [string]$Protocol
+        [string]$Protocol,
+
+        [Parameter(Mandatory=$false, Position=4)]
+        [string]$Tag
     )
 
     begin {
@@ -90,6 +93,10 @@ function Get-RUMConnection {
 
                 if ($PSBoundParameters.ContainsKey("Protocol")) {
                     $Connections = $Connections | Where-Object {$_.Protocol -eq $Protocol}
+                }
+
+                if ($PSBoundParameters.ContainsKey("Tag")) {
+                    $Connections = $Connections | Where-Object {$_.Tag -contains $Tag}
                 }
 
                 $Connections | Add-Member -MemberType NoteProperty -Name DatabaseName -Value $DatabaseName
