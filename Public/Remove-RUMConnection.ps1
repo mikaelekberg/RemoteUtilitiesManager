@@ -1,5 +1,6 @@
 function Remove-RUMConnection {
     [CmdletBinding(SupportsShouldProcess=$true,ConfirmImpact='High')]
+    [Alias("rrumcn")]
     param(
         [ArgumentCompleter( {
             param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)

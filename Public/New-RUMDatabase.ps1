@@ -1,5 +1,6 @@
 function New-RUMDatabase {
     [CmdletBinding()]
+    [Alias("nrumdb")]
     param(
         [Parameter(Mandatory=$true, Position=0)]
         [String]$DatabaseName

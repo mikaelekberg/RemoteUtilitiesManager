@@ -1,5 +1,6 @@
 function Get-RUMDatabase {
     [CmdletBinding()]
+    [Alias("grumdb")]
     param(
         [ArgumentCompleter( {
             param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)

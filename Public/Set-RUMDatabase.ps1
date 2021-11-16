@@ -1,5 +1,6 @@
 function Set-RUMDatabase {
     [CmdletBinding()]
+    [Alias("srumdb")]
     param(
         [ArgumentCompleter( {
             param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)

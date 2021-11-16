@@ -1,5 +1,6 @@
 function Remove-RUMDatabase {
     [CmdletBinding(SupportsShouldProcess=$true,ConfirmImpact='High')]
+    [Alias("rrumdb")]
     param(
         [ArgumentCompleter( {
             param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)

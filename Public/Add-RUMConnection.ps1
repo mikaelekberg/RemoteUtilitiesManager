@@ -1,5 +1,6 @@
 function Add-RUMConnection {
     [CmdletBinding()]
+    [Alias("arumcn")]
     param(
         [ArgumentCompleter( {
             param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)

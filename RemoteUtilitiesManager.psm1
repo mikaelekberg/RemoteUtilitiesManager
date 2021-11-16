@@ -15,7 +15,6 @@ Get-ChildItem $PSScriptRoot\Class\*.ps1 -Exclude *.Tests.ps1 | ForEach-Object {
 	. $_.FullName
 }
 
-
 # Load any argument completers
 if( Test-Path $PSScriptRoot\ArgumentCompleters ) {
 	Get-ChildItem $PSScriptRoot\ArgumentCompleters\*.ps1 -Exclude *.Tests.ps1 | ForEach-Object {
